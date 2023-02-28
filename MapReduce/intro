@@ -1,0 +1,5 @@
+Hadoop is used for storing and processing a huge amount of data, 
+  for storing Hadoop uses HDFS (Hadoop Distributed File System) and 
+  for processing Hadoop uses MapReduce. 
+Hive is used for analysing 
+  Hive uses hiveQL statement which runs over MapReduce framework to analyse the data
