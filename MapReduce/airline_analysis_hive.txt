@@ -1,0 +1,75 @@
+hive
+
+show databases;
+
+use default;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS delay_flights(
+  Year int, 
+  Month int,
+  DayofMonth int,
+  DayOfWeek int,
+  DepTime int,
+  CRSDepTime int,
+  ArrTime int,
+  CRSArrTime int,
+  UniqueCarrier string,
+  FlightNum int,
+  TailNum string,
+  ActualElapsedTime int,
+  CRSElapsedTime int,
+  AirTime int,
+  ArrDelay int,
+  DepDelay int,
+  Origin string,
+  Dest string,
+  Distance int,
+  TaxiIn int,
+  TaxiOut int,
+  Cancelled string,
+  CancellationCode string,
+  Diverted string,
+  CarrierDelay int,
+  WeatherDelay int,
+  NASDelay int,
+  SecurityDelay int,
+  LateAircraftDelay int
+)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',' 
+LOCATION '/user/tables/delay_flights';
+
+show tables;
+
+LOAD DATA INPATH 's3://bucketforassignment1/DelayedFlights-updated.csv' OVERWRITE INTO TABLE delay_flights;
+
+	
+SET hive.cli.print.header=true;
+
+SELECT Year As Year, avg((CarrierDelay/ArrDelay)*100) AS CarrierDelay
+FROM delay_flights
+GROUP BY Year
+ORDER BY Year;
+
+
+SELECT Year As Year, avg((NASDelay/ArrDelay)*100) AS NASDelay
+FROM delay_flights
+GROUP BY Year
+ORDER BY Year;
+
+SELECT Year As Year, avg((WeatherDelay/ArrDelay)*100) AS WeatherDelay
+FROM delay_flights
+GROUP BY Year
+ORDER BY Year;
+
+SELECT Year As Year, avg((LateAircraftDelay/ArrDelay)*100) AS LateAircraftDelay
+FROM delay_flights
+GROUP BY Year
+ORDER BY Year;
+
+SELECT Year As Year, avg((SecurityDelay/ArrDelay)*100) AS SecurityDelay
+FROM delay_flights
+GROUP BY Year
+ORDER BY Year;
+
+
